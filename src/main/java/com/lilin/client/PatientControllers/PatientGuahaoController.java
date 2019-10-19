@@ -30,33 +30,38 @@ public class PatientGuahaoController {
     private Button back;
 
     @FXML
-    private ComboBox<String> department ;
+    private ComboBox<String> department;
     @FXML
-    private ComboBox<String>  doctorList;
+    private ComboBox<String> doctorList;
 
-    private Logger logger ;
+    private Logger logger;
 
 
     private TransDataWithServer tdws = TransDataWithServerFactory.getTransDataWithServer();
 
     @FXML
-    public void initialize(){
-        department.valueProperty().addListener(r->{
+    public void initialize() {
+        department.valueProperty().addListener(r -> {
+            doctorList.getItems().remove(0, doctorList.getItems().size());
+
             if (!department.getValue().isEmpty()) {
-                int opCode = 5, answer = 6;
-                ClientData clientData = new ClientData(opCode, department.getValue());
-                try {
-                    AnswerData trans = tdws.trans(clientData, answer);
-                    List<DoctorInfo> doctorInfos = JSON.parseArray(trans.getAnswerInfo(), DoctorInfo.class);
-                    MyUtils.getParam().put("doctors", doctorInfos);
-                    for (int i = 0; i < doctorInfos.size(); i++) {
-                        doctorList.getItems().add(doctorInfos.get(i).getUserName());
+                if (!MyUtils.getParam().containsKey(department.getValue())) {
+                    int opCode = 5, answer = 6;
+                    ClientData clientData = new ClientData(opCode, department.getValue());
+                    try {
+                        AnswerData trans = tdws.trans(clientData, answer);
+                        List<DoctorInfo> doctorInfos = JSON.parseArray(trans.getAnswerInfo(), DoctorInfo.class);
+//
+                        MyUtils.getParam().put(department.getValue(), doctorInfos);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-
-
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
+            }
+            List<DoctorInfo> doctorInfos = (List<DoctorInfo>) MyUtils.getParam().get(department.getValue());
+            for (int i = 0; i < doctorInfos.size(); i++) {
+                doctorList.getItems().add(doctorInfos.get(i).getUserName());
             }
         });
 
@@ -66,7 +71,7 @@ public class PatientGuahaoController {
     void handleClickGuahao(ActionEvent event) throws Exception {
 
 
-        List<DoctorInfo> doctorInfos = ((List<DoctorInfo>)(MyUtils.getParam().get("doctors")));
+        List<DoctorInfo> doctorInfos = ((List<DoctorInfo>) (MyUtils.getParam().get(department.getValue())));
 
         DoctorInfo doctorInfo = doctorInfos.stream()
                 .filter(d -> {
@@ -77,32 +82,29 @@ public class PatientGuahaoController {
         PatientInfo data = (PatientInfo) MyUtils.getParam().get("patientInfo");
 
         Integer opCode = 31, answerCode = 41;
-        GuahaoInfo guahaoInfo = new GuahaoInfo(department.getValue(), data.getIdNumber() , data.getUserName(), null,doctorInfo.getIdNumber());
-            String guahaoJSON = JSON.toJSONString(guahaoInfo);
+        GuahaoInfo guahaoInfo = new GuahaoInfo(department.getValue(), data.getIdNumber(), data.getUserName(), null, doctorInfo.getIdNumber());
+        String guahaoJSON = JSON.toJSONString(guahaoInfo);
 
-            ClientData clientData = new ClientData(opCode, guahaoJSON);
-            AnswerData answerData = tdws.trans(clientData, answerCode);
+        ClientData clientData = new ClientData(opCode, guahaoJSON);
+        AnswerData answerData = tdws.trans(clientData, answerCode);
 
-            if (answerData.isSuccess()) {
-                if(answerData.getAnswerInfo().isEmpty()){
-                    ShowAlert showAlert = new ShowAlert("挂号失败");
+        if (answerData.isSuccess()) {
+            if (answerData.getAnswerInfo().isEmpty()) {
+                ShowAlert showAlert = new ShowAlert("挂号失败");
 
-                }else{
-                    ShowAlert showAlert = new ShowAlert("挂号成功");
-                }
-
-
+            } else {
+                ShowAlert showAlert = new ShowAlert("挂号成功");
             }
+
+
+        }
 
     }
 
 
-
-
-
     @FXML
-    void handleClickBack(ActionEvent event)throws IOException {
-        ChangeView changeView = new ChangeView("PatientViews/PatientIndex.fxml","主界面",event);
+    void handleClickBack(ActionEvent event) throws IOException {
+        ChangeView changeView = new ChangeView("PatientViews/PatientIndex.fxml", "主界面", event);
 
     }
 

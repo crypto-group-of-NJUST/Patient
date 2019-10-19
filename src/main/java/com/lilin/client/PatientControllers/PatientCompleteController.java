@@ -88,15 +88,10 @@ private TransDataWithServer tdws = TransDataWithServerFactory.getTransDataWithSe
 
     @FXML
     void handleClickSubmit(ActionEvent event)throws IOException {
+        System.out.println(name.getText());
+        System.out.println(sex.getText());
 
 
-        if(name.getText().isEmpty()||sex.getText().isEmpty()||age.getText().isEmpty()||birthdate.getText().isEmpty()
-            ||nation.getText().isEmpty()||telephone.getText().isEmpty()||age.getText().isEmpty()||idNumber.getText().isEmpty()
-            ||address.getText().isEmpty()||patientID.getText().isEmpty()||mail.getText().isEmpty())
-        {
-            ShowAlert showAlert = new ShowAlert("请填写完整信息后提交");
-
-        }else {
             int opCode =19,answerCode=29;
             PatientInfo data = (PatientInfo) MyUtils.getParam().get("patientInfo");
 
@@ -117,7 +112,7 @@ private TransDataWithServer tdws = TransDataWithServerFactory.getTransDataWithSe
             ShowAlert showAlert = new ShowAlert("信息完善表已提交");
         }
 
-    }
+
 
         @FXML
     public  void initialize(){

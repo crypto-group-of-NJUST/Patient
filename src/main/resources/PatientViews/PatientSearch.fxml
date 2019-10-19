@@ -24,7 +24,7 @@
          <font>
             <Font size="22.0" />
          </font></Label>
-      <ComboBox fx:id="department" layoutX="300.0" layoutY="167.0" prefWidth="150.0">
+      <ComboBox fx:id="department" layoutX="300.0" layoutY="167.0" prefHeight="27.0" prefWidth="113.0">
           <items>
               <FXCollections fx:factory="observableArrayList">
                   <String fx:value="外科" />
@@ -48,11 +48,11 @@
          <font>
             <Font size="20.0" />
          </font></Button>
-      <Label layoutX="216.0" layoutY="236.0" text="医生">
+      <Label layoutX="436.0" layoutY="167.0" prefHeight="28.0" prefWidth="94.0" text="医生姓名">
          <font>
             <Font size="22.0" />
          </font>
       </Label>
-      <ComboBox layoutX="300.0" layoutY="237.0" prefWidth="150.0" />
+      <ComboBox fx:id="docName" layoutX="541.0" layoutY="167.0" prefHeight="27.0" prefWidth="140.0" />
    </children>
 </AnchorPane>
