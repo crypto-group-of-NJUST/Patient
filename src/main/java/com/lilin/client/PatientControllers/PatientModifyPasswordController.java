@@ -51,7 +51,7 @@ public class PatientModifyPasswordController {
 
 
             int opCode =18,answerCode=28;
-            PasswordModify modify = new PasswordModify("pt",data.getIdNumber(),prePassword.getText(),newPassword.getText());
+            PasswordModify modify = new PasswordModify("pt",data.getIdNumber(),prePassword.getText(),newPassword.getText(),null);
             AnswerData answerData = MyUtils.transData(tdws, modify, opCode, answerCode);
             System.out.println(answerData.getAnswerInfo());
             if(answerData.isSuccess()){
