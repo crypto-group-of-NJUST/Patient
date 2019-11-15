@@ -4,13 +4,16 @@ package com.lilin.client.Main;
 import com.alibaba.fastjson.JSON;
 import com.lilin.client.Class.ChangeView;
 import com.lilin.client.Class.ShowAlert;
+import com.lilin.client.connection.ConnectionWithServer;
 import com.lilin.client.connection.TransDataWithServer;
 import com.lilin.client.pojo_contr.AnswerData;
 import com.lilin.client.pojo_contr.ClientData;
 import com.lilin.client.pojo_contr.PatientInfo;
 import com.lilin.client.pojo_contr.UserLog;
+import com.lilin.client.utils.ConnectionWithServerFactory;
 import com.lilin.client.utils.MyUtils;
 import com.lilin.client.utils.TransDataWithServerFactory;
+import com.lilin.client.utils.crypto.SM4_String;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -36,6 +39,7 @@ public class MainController implements Initializable {
 
 
     private TransDataWithServer tdws = TransDataWithServerFactory.getTransDataWithServer();
+    private ConnectionWithServer cws = ConnectionWithServerFactory.getConnectionWithServer();
 
     @FXML
     public void handleClickLogIn(ActionEvent event) throws Exception {
@@ -66,7 +70,6 @@ public class MainController implements Initializable {
                     String id = idNumber.getText();
                     ClientData clientData1 = new ClientData(code,id);
                     AnswerData answerData1 = tdws.trans(clientData1, anCode);
-                    System.out.println(answerData1.getAnswerInfo());
                     MyUtils.getParam().put("patientInfo",JSON.parseObject(answerData1.getAnswerInfo(), PatientInfo.class));
                     ChangeView changeView = new ChangeView("PatientViews/PatientIndex.fxml","主界面", event);
 
@@ -90,7 +93,18 @@ public class MainController implements Initializable {
 
     @FXML
     public void handleClickLogOut(ActionEvent event) throws IOException {
-
+        int opCode = 16;
+        ClientData clientData = new ClientData(opCode,null);
+        String data = JSON.toJSONString(clientData);
+        String enData = null;
+        try {
+            enData = SM4_String.encWithIV(data, cws.getSessionKey());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        cws.getBw().write(enData);
+        cws.getBw().newLine();
+        cws.getBw().flush();
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.close();
     }

@@ -11,7 +11,6 @@ import lombok.Setter;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.util.Arrays;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -28,7 +27,6 @@ public class TransDataWithServer {
 
     public AnswerData trans(ClientData clientData,Integer answerCode) throws Exception {
         String data = JSON.toJSONString(clientData);
-        System.out.println(Arrays.toString(sessionKey));
         String enData = SM4_String.encWithIV(data, sessionKey);
         bw.write(enData);
         bw.newLine();
