@@ -41,22 +41,23 @@ public class PatientGuahaoController {
 
     @FXML
     public void initialize() {
-        department.valueProperty().addListener(r -> {
+        doctorList.setOnMouseClicked(r -> {
             doctorList.getItems().remove(0, doctorList.getItems().size());
 
             if (!department.getValue().isEmpty()) {
-                if (!MyUtils.getParam().containsKey(department.getValue())) {
-                    int opCode = 5, answer = 6;
-                    ClientData clientData = new ClientData(opCode, department.getValue());
-                    try {
-                        AnswerData trans = tdws.trans(clientData, answer);
-                        List<DoctorInfo> doctorInfos = JSON.parseArray(trans.getAnswerInfo(), DoctorInfo.class);
+                if (MyUtils.getParam().containsKey(department.getValue())) {
+                    MyUtils.getParam().remove(department.getValue());
+                }
+                int opCode = 5, answer = 6;
+                ClientData clientData = new ClientData(opCode, department.getValue());
+                try {
+                    AnswerData trans = tdws.trans(clientData, answer);
+                    List<DoctorInfo> doctorInfos = JSON.parseArray(trans.getAnswerInfo(), DoctorInfo.class);
 //
-                        MyUtils.getParam().put(department.getValue(), doctorInfos);
+                    MyUtils.getParam().put(department.getValue(), doctorInfos);
 
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
             List<DoctorInfo> doctorInfos = (List<DoctorInfo>) MyUtils.getParam().get(department.getValue());

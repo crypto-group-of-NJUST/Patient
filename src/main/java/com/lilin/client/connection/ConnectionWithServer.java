@@ -40,7 +40,7 @@ public class ConnectionWithServer {
     private BufferedReader br;
 
     public boolean connect() throws Exception {
-        socket = new Socket("127.0.0.1", 8887);
+        socket = new Socket("localhost", 8887);
 
         bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
         br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -78,7 +78,7 @@ public class ConnectionWithServer {
                 bw.flush();
             }
             sum++;
-        } while (!an && sum <= 5);
+        } while (sum <= 5 &&!an );
         connect=an;
         return an;
     }

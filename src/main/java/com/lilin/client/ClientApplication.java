@@ -34,6 +34,8 @@ public class ClientApplication extends Application {
             primaryStage.setScene(scene);
             primaryStage.setResizable(false);
             primaryStage.setTitle("病人客户端");
+            primaryStage.setX(50);
+            primaryStage.setY(220);
 
             primaryStage.show();
             ConnectionWithServer connectionWithServer = ConnectionWithServerFactory.getConnectionWithServer();
