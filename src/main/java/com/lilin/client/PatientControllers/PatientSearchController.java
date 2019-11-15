@@ -102,7 +102,7 @@ public class PatientSearchController {
 
     @FXML
     public void initialize() {
-        department.setOnMouseClicked(r -> {
+        docName.setOnMouseClicked(r -> {
             docName.getItems().remove(0, docName.getItems().size());
             if (!department.getValue().isEmpty()) {
 
