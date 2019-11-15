@@ -39,7 +39,6 @@ public class ClientApplication extends Application {
 
             primaryStage.show();
             ConnectionWithServer connectionWithServer = ConnectionWithServerFactory.getConnectionWithServer();
-            connectionWithServer.connect();
             TransDataWithServerFactory.init(connectionWithServer.getBw(),connectionWithServer.getBr(),connectionWithServer.getSessionKey());
 
         } catch (IOException e) {
