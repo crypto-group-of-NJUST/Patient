@@ -96,9 +96,6 @@ public class PatientSearchResultController {
         medicineCol.setCellValueFactory(new PropertyValueFactory<>("medication"));
         verifyCol.setCellValueFactory(new PropertyValueFactory<>("verify"));
 
-
-        verifyCol.setCellValueFactory(new PropertyValueFactory<>("verify"));
-
         orderCol.setCellFactory((col) -> {
             TableCell<VisitInfo, String> cell = new TableCell<VisitInfo, String>() {
                 @Override
@@ -200,10 +197,10 @@ public class PatientSearchResultController {
         patientTable.setItems(patientInfos1);
         // 设置查询结果页面的自动获取值
 
-                    beginDate2.setText((String) MyUtils.getParam().get("beginDate"));
-                    beginDate2.setDisable(true);
-                    endDate2.setText((String) MyUtils.getParam().get("endDate"));
-                    endDate2.setDisable(true);
+        beginDate2.setText((String) MyUtils.getParam().get("beginDate"));
+        beginDate2.setDisable(true);
+        endDate2.setText((String) MyUtils.getParam().get("endDate"));
+        endDate2.setDisable(true);
 
         department2.setText((String) MyUtils.getParam().get("department"));
         department2.setDisable(true);
